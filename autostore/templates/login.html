@@ -34,14 +34,14 @@
     
     <div class="center">
         <h1>Login</h1>
-        <form action ="/login.html" method="post">
+        <form action ="{{ url_for('login') }}" method="post">
             <div class="txt_filed">
-                <input type="text" placeholder="username" name="username" id="username" required >
+                <input type="text" placeholder="username" name="username" id="username" value="{{request.form.username}}" required >
                 <span></span>
                 <label>Username</label>
             </div>
             <div class="txt_filed">
-                <input type="text" placeholder="password" name= "password" id="password" required >
+                <input type="text" placeholder="password" name= "password" id="password" value="{{request.form.password}}" required >
                 <span></span>
                 <label>Password</label>
             </div>
@@ -50,9 +50,20 @@
             </div>
             <input type="submit" value="Login">
             <div class="signup">
-                Not a member? <a href="#">signup</a>
+                Not a member? <a href="register.html">signup</a>
             </div>
         </form>
+        {% with messages = get_flashed_messages()  %}
+            {% if messages %}
+                {% for message in messages %}
+            
+                    <p class="error"><Strong>Error:</Strong></p>
+                    {{message}}
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+
     </div>
     
     <style>
@@ -91,6 +102,7 @@
             background: linear-gradient(120deg,#0504056b, #be5b5b );
             height: 100vh;
             overflow: hidden;
+            margin-top: 90px;
 
 
 
@@ -109,6 +121,7 @@
             top: 0;
             left: 0;
             z-index: 100;
+            margin-top: -1px;
 
         }
 
