@@ -64,8 +64,7 @@ def login():
         else:
             # Account doesnt exist or username/password incorrect
             flash('Incorrect username/password')
- 
-    return render_template('login.html')    
+  
 
 
 
@@ -87,11 +86,34 @@ def cart():
 
     return render_template('cart.html')
 
-@app.route('/register.html')
+@app.route('/register.html', methods=['GET', 'POST'])
 def register():
 
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+ 
+    if ( (request.method == 'POST') and ('firstname' in request.form) and ('lastname' in request.form) and ('username' in request.form) and ('password' in request.form) and ('email' in request.form)):
+    # Create variables for easy access
+        first_name = request.form['firstname']
+        last_name = request.form['lastname']
+        email = request.form['email']
+        username = request.form['username']
+        password = request.form['password']
+        
     
-   
+        cursor.execute('SELECT * FROM userinfo WHERE username = %s', (username,))
+        account_username = cursor.fetchone()
+        
+        
+        
+        if account_username:
+            flash('Account already exists!')
+        else:
+            cursor.execute("INSERT INTO userinfo (email,username, password, first_name, last_name ) VALUES (%s,%s,%s,%s, %s)", (email, username, password, first_name, last_name))
+            conn.commit()
+            return redirect(url_for('index'))
+    
+    
+    
 
 
 
