@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto Parts</title>
+    <!-- css link-->
+    
+    <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <!--Navbar -->
+    <header>
+        <div class="nav containers">
+            <i class='bx bx-menu' id="menu-icon"></i>
+            <!-- logo-->
+            <a href="login.html" class="logo">Auto<span>Parts</span></a>
+
+            <ul class="navbar">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="parts.html">Parts</a></li>
+                <li><a href="vehicle.html">Add Vehical</a></li>
+                <li><a href="cart.html">Cart</a></li>
+                <li><a href="login.html">Log in</a></li>
+            </ul>
+            <!--search icon -->
+            <i class='bx bx-search' id="search-icon"></i>
+            <div class="search-box containers">
+                <input type="search" name="" id="" placeholder="serch..">
+            </div>
+        </div>
+    </header>
+
+
+    <div class="cart_page">
+        <table>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Subtotal</th>
+            </tr>
+
+            <tr>
+                <td>
+                    <div class="cart_container">
+                        <img src="/static/part1.png" >
+                        <div>
+                            <p>Product name</p>
+                            <small>Price: $50.00</small>
+                            <a href="">Remove</a>
+                        </div>
+                    </div>
+
+                </td>
+                <td><input type="number" name="quantity" value="1"></td>
+                <td>$50.00</td>
+            </tr>
+
+            <tr>
+                <td>
+                    <div class="cart_container">
+                        <img src="/static/part2.png" slt="">
+                        <div>
+                            <p>Product name</p>
+                            <small>Price: $50.00</small>
+                            <a href="">Remove</a>
+                        </div>
+                    </div>
+
+                </td>
+                <td><input type="number" value="1"></td>
+                <td>$50.00</td>
+            </tr>
+
+            <tr>
+                <td>
+                    <div class="cart_container">
+                        <img src="/static/part3.png" slt="">
+                        <div>
+                            <p>Product name</p>
+                            <small>Price: $50.00</small>
+                            <a href="">Remove</a>
+                        </div>
+                    </div>
+
+                </td>
+                <td><input type="number" value="1"></td>
+                <td>$50.00</td>
+            </tr>
+        </table>
+
+        <div class="total">
+            <table>
+                <tr>
+                    <td>Subtotal</td>
+                    <td>$150.00</td>
+                </tr>
+                <tr>
+                    <td>Tax</td>
+                    <td>$20.00</td>
+                </tr>
+                <tr>
+                    <td>Total</td>
+                    <td>$170.00</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800;900&family=Poppins:wght@300;400;500;600;700&display=swap');
+        *{
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            scroll-padding-top: 1rem;
+            list-style: none;
+            text-decoration: none;
+            box-sizing: border-box;
+        }
+        :root{
+            --main-color: #d90429;
+    
+            --text-color: #020102;
+            --bg-color: #fff;
+
+        }
+
+        section{
+            padding: 4rem 0 2rem;
+        }
+
+        img{
+            width: 100%;
+        }
+
+        body{
+            
+            max-width: 1300px;
+            margin: auto;
+            margin-top: 90px;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            align-items: center;
+            background-size: cover;
+
+            font-family: montserrat;
+            background-color: #eedada;
+            /* background: linear-gradient(120deg,#0504056b, #8b6666 ); */
+           
+            
+
+
+
+        }
+
+        .containers{
+            max-width: 1068px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        header{
+            display: block;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            margin-top: -1px;
+
+        }
+
+        .nav{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 35px;
+        }
+
+        #menu-icon{
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--bg-color);
+            display: none;
+        }
+
+        .logo{
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--bg-color);
+        }
+
+        .logo span{
+            color: var(--main-color);
+        }
+
+        .navbar{
+            display: flex;
+            column-gap: 2rem;
+        }
+
+        .navbar a{
+            color: var(--bg-color);
+            font-size: 1rem;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .navbar a:hover, .navbar .active{
+            color: var(--main-color);
+            border-bottom: 3px solid var(--main-color);
+
+        }
+
+        #search-icon{
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--bg-color);
+        }
+
+
+        .search-box{
+            position: absolute;
+            top: 110%;
+            right: 0;
+            left: 0;
+            background: var(--bg-color);
+            box-shadow: 4px 4px 20px rgb(15 54 55 / 10%);
+            border: 1px solid var(--main-color);
+            border-radius: 0.5rem;
+            clip-path: circle(0% at 100% 0%);
+        }
+        .search-box.active{
+            clip-path: circle(144% at 100% 0%);
+            transition: 0.4s;
+        }
+        .search-box .input{
+            width: 100%;
+            padding: 20px;
+            border: none;
+            outline: none;
+            background: transparent;
+            font-size: 1rem;
+        }
+
+
+        /* cart section */
+
+        .cart_page{
+            margin: 80px auto;
+        }
+
+        /*
+        .cart_page img{
+            width: 100%;
+            height: 150px;
+            object-fit: contain;
+            object-position: left;
+            margin-bottom: 1rem;
+        }
+        */
+        
+
+        table{
+            
+            /* background-color: #fff; */
+            
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .cart_container{
+            display: flex;
+            flex-wrap: wrap;
+            margin-left: auto;
+            margin-right: auto;
+        
+        }
+        th{
+            text-align: left;
+            padding: 5px;
+            color: #fff;
+            background-color: #CB3737;
+            font-weight: normal;
+            margin-left: auto;
+            margin-right: auto;
+        
+        }
+
+        td{
+            padding: 10px 5px;
+        }
+
+        td input{
+            width: 40px;
+            height: 30px;
+            padding: 5px;
+
+        }
+
+        td a{
+            color: #ff533b;
+            font-size: 12px;
+        }
+        
+        td img{
+            width: 80px;
+            height: 80px;
+            margin-right: 10px;
+        }
+
+        .total{
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        .total table{
+            border-top: 3px solid #ff533b;
+            width: 100%;
+            max-width:400px;
+        }
+
+        td:last-child{
+            text-align: right;
+    
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+        
+    </style>
+    
+
+
+
+
+    
+    
+</body>
+</html>
+
