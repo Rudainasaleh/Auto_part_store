@@ -34,60 +34,48 @@
 
 
     <div class="cart_page">
+
+        
         <table>
+            
+            
+            
+            <!-- for empty cart--> 
             <tr>
                 <th>Product</th>
                 <th>Quantity</th>
                 <th>Subtotal</th>
             </tr>
 
+        {% for purche in purches %}
             <tr>
-                <td>
-                    <div class="cart_container">
-                        <img src="/static/part1.png" >
-                        <div>
-                            <p>Product name</p>
-                            <small>Price: $50.00</small>
-                            <a href="">Remove</a>
-                        </div>
-                    </div>
+                
+                    <form method="post" action="/cart.html"></form>
+                        <td>
+                    
+                            <div class="cart_container">
+                                <img src="/static/{{purche.image}}" >
+                                <div>
+                                    <p>{{purche.name}}</p>
+                                    <small>Price: {{purche.price}}</small>
+                                    <!--<input href="{{  url_for('delete_from_cart', id = purche.orderid)}}" name="remove" >Remove</a>-->
+                                    <input  type="submit" name="remove"  value="Remove"/>
+                                    <input type="hidden" name="orderid" value="{{purche.orderid}}" />
+                                </div>
+                            </div>
 
-                </td>
-                <td><input type="number" name="quantity" value="1"></td>
-                <td>$50.00</td>
+                        </td>
+                        <td><p type="number" name="quantity">{{purche.quantity}}</td>
+                        <td>$ {{purche.total_price}}</td>
+                    </form>
+                
             </tr>
+        {% endfor %}
+            
+            
 
-            <tr>
-                <td>
-                    <div class="cart_container">
-                        <img src="/static/part2.png" slt="">
-                        <div>
-                            <p>Product name</p>
-                            <small>Price: $50.00</small>
-                            <a href="">Remove</a>
-                        </div>
-                    </div>
+            
 
-                </td>
-                <td><input type="number" value="1"></td>
-                <td>$50.00</td>
-            </tr>
-
-            <tr>
-                <td>
-                    <div class="cart_container">
-                        <img src="/static/part3.png" slt="">
-                        <div>
-                            <p>Product name</p>
-                            <small>Price: $50.00</small>
-                            <a href="">Remove</a>
-                        </div>
-                    </div>
-
-                </td>
-                <td><input type="number" value="1"></td>
-                <td>$50.00</td>
-            </tr>
         </table>
 
         <div class="total">
@@ -104,8 +92,12 @@
                     <td>Total</td>
                     <td>$170.00</td>
                 </tr>
+                
+            
             </table>
+            <input type="submit" name="checkout_btn" value="checkout" class="btn"/>
         </div>
+        
     </div>
     
     <style>
@@ -292,6 +284,10 @@
         td{
             padding: 10px 5px;
         }
+        td a{
+            color: #ff533b;
+            font-size: 12px;
+        }
 
         td input{
             width: 40px;
@@ -300,7 +296,7 @@
 
         }
 
-        td a{
+        td input{
             color: #ff533b;
             font-size: 12px;
         }
@@ -325,6 +321,15 @@
         td:last-child{
             text-align: right;
     
+        }
+        .btn{
+            padding: 10px 22px;
+            background: var(--main-color);
+            color: var(--bg-color);
+            font-weight: 400;
+        }
+        .btn:hover{
+            background: #fd052f;
         }
 
 
