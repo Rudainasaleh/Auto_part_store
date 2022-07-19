@@ -18,9 +18,9 @@ app = Flask(__name__)
 
 conn = psycopg2.connect(
     host = 'localhost',
-    database = 'Autostore',
-    user = 'postgres',
-    password = 'Rudaina998642642',
+    database = '',
+    user = '',
+    password = '',
     )
 
 @app.route('/')
