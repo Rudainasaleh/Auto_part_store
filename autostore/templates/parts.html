@@ -43,11 +43,12 @@
                     <div class="parts-container container">
                         <div class="box">
                             <img src="/static/{{parts.image}}">
-                            <h3>{{parts.name}}</h3>
-                            <span>{{parts.price}}</span>
+                            <h3 name="name">{{parts.name}}</h3>
+                            <span name="price">{{parts.price}}</span>
                             
-                            
-                            <a href="#" value="{{parts.partid}}" class="btn">Buy Now</a>
+                            <input type="number" class="quantity" name="quantity" value="1" size="2" />
+                            <input type="submit" name="add_to_cart" value="Add to cart" class="btn"/>
+                            <input type="hidden" name="partid" value="{{parts.partid}}" />
                             <a href="#" class="detailz">View details</a>
                         </div> 
                     </div>
@@ -91,19 +92,25 @@
         body{
             max-width: 1300px;
             margin: auto;
+            margin-top: 90px;
             width: 100%;
             min-height: 640px;
-            display: flex;
+            
             align-items: center;
             background-size: cover;
-            background-color: #0504056b;
-            color: #020102;
+
+            font-family: montserrat;
+            background: linear-gradient(120deg,#0504056b, #be5b5b );
+           
         }
 
         .containers{
+            height: 100%;
             max-width: 1068px;
             margin-left: auto;
             margin-right: auto;
+            margin-top: auto;
+            
         }
 
         header{
@@ -112,7 +119,8 @@
             position: fixed;
             top: 0;
             left: 0;
-            z-index: 100;
+            z-index: 9;
+            margin-top: -1px;
 
         }
 
