@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto Parts</title>
+    <!-- css link-->
+    
+    <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <!--Navbar -->
+    <header>
+        <div class="nav containers">
+            <i class='bx bx-menu' id="menu-icon"></i>
+            <!-- logo-->
+            <a href="login.html" class="logo">Auto<span>Parts</span></a>
+
+            <ul class="navbar">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="parts.html">Parts</a></li>
+                <li><a href="vehicle.html">Add Vechal</a></li>
+                <li><a href="cart.html">Cart</a></li>
+                <li><a href="login.html">Log in</a></li>
+            </ul>
+            <!--search icon -->
+            <i class='bx bx-search' id="search-icon"></i>
+            <div class="search-box containers">
+                <input type="search" name="" id="" placeholder="serch..">
+            </div>
+        </div>
+    </header>
+
+    <div class="chechout-progres">
+        
+        
+
+        <div class="form">
+            <h2 class="form-title">Payment Details</h2>
+
+            <form method="post" action="{{url_for('checkout')}}" class="checkout-form">
+                <div class="input-line">
+                    <label for="name">Name on card</label>
+                    <input type="text" name="name" id="name" value="" placeholder="Your Name and surname">
+                </div>
+                <div class="input-line">
+                    <label for="name">Card number</label>
+                    <input type="text" name="card" id="card" value="" placeholder="1111-1111-1111-1111">
+                </div>
+                <div class="input-container">
+                    <div class="input-line">
+                        <label for="name">Expiring Date</label>
+                        <input type="text" name="date" id="date" value="" placeholder="07-22">
+                    </div>
+                    <div class="input-line">
+                        <label for="name">CVC</label>
+                        <input type="text" name="cvc" id="cvc" value="" placeholder="***">
+                    </div>
+                </div>
+
+
+                <input type="submit" value="Complate purchase"/>
+
+            </form>
+
+
+            
+        </div>
+        {% for purche in purchase %}
+
+        <!--
+
+        <div class="form_2">
+
+
+            <h2 class="form-title">Oreder Details</h2>
+
+            <form method="post" action="{{url_for('checkout')}}" class="checkout-form">
+                <div class="input-line">
+                    <label for="name">{{purche.name}}</label>
+                    <label for="name">{{purche.total_price}}</label>
+                    
+                    
+
+                    <input type="text" name="name" id="name" value="" placeholder="Your Name and surname">
+                </div>
+                
+
+
+                <input type="submit" name="back" value="Back" herf="{{url_for('cart')}}" />
+
+            </form>
+
+
+            
+        </div>
+        -->
+        {% endfor %}
+    </div>
+
+
+
+
+
+
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800;900&family=Poppins:wght@300;400;500;600;700&display=swap');
+        *{
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            scroll-padding-top: 1rem;
+            list-style: none;
+            text-decoration: none;
+            box-sizing: border-box;
+        }
+        :root{
+            --main-color: #d90429;
+    
+            --text-color: #020102;
+            --bg-color: #fff;
+
+        }
+
+        section{
+            padding: 4rem 0 2rem;
+        }
+
+        img{
+            width: 100%;
+        }
+
+        body{
+            
+            max-width: 1300px;
+            margin: auto;
+            margin-top: 90px;
+            min-height: 640px;
+            padding: 0;
+            font-family: montserrat;
+            background: linear-gradient(120deg,#0504056b, #be5b5b );
+            height: 100vh;
+            overflow: hidden;
+            margin-top: 90px;
+
+
+
+        }
+
+        .containers{
+            max-width: 1068px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        header{
+            display: block;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            margin-top: -1px;
+
+        }
+
+        .nav{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 35px;
+        }
+
+        #menu-icon{
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--bg-color);
+            display: none;
+        }
+
+        .logo{
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--bg-color);
+        }
+
+        .logo span{
+            color: var(--main-color);
+        }
+
+        .navbar{
+            display: flex;
+            column-gap: 2rem;
+        }
+
+        .navbar a{
+            color: var(--bg-color);
+            font-size: 1rem;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .navbar a:hover, .navbar .active{
+            color: var(--main-color);
+            border-bottom: 3px solid var(--main-color);
+
+        }
+
+        #search-icon{
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--bg-color);
+        }
+
+
+        .search-box{
+            position: absolute;
+            top: 110%;
+            right: 0;
+            left: 0;
+            background: var(--bg-color);
+            box-shadow: 4px 4px 20px rgb(15 54 55 / 10%);
+            border: 1px solid var(--main-color);
+            border-radius: 0.5rem;
+            clip-path: circle(0% at 100% 0%);
+        }
+        .search-box.active{
+            clip-path: circle(144% at 100% 0%);
+            transition: 0.4s;
+        }
+        .search-box .input{
+            width: 100%;
+            padding: 20px;
+            border: none;
+            outline: none;
+            background: transparent;
+            font-size: 1rem;
+        }
+
+        .chechout-progres{
+            
+            margin-left: 5%;
+            margin-right: 20%;
+            margin-top: 100px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 40;
+        }
+        
+        .checkout-step{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .check{
+            background: linear-gradient(120deg,#0504056b, #be5b5b );
+            height: 20px;
+            width: 20px;
+            border-radius: 30px;
+            margin-bottom: 1rem;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: 40%;
+            position: relative;
+
+        }
+        .checkout-step:nth-of-type(1) .check::after{
+            display: none;
+        }
+
+        .checkout-step:nth-of-type(1) .check{
+            background-image: none;
+            background-color: white;
+            border: 2px solid gray;
+        }
+
+    
+
+        .check::after{
+            content: "";
+            width: 15vw;
+            height: 2px;
+            background-color: inherit;
+            position: absolute;
+            top: 50%;
+            right: 0;
+            transform: translateX(100%) translateY(-50%)
+        }
+
+        .title{
+            color: gray;
+        }
+
+        .form {
+            width: 40%;
+            margin-top: 10px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            flex-direction: column;
+
+            
+        }
+        .form_2{
+            width: 40%;
+            margin-top: 10px;
+            margin-left: 20px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            flex-direction: column;
+
+        }
+
+        .form-title{
+            font-size: 27px;
+            
+            font-weight: 500;
+            opacity: 0.8;
+        }
+
+        .checkout-form{
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            flex-direction: column;
+            width: 100%;
+
+        }
+
+        .input-line{
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            flex-direction: column;
+            margin-bottom: 2rem;
+            width: 100%;
+        }
+        label{
+            font-size: 16px;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        input[type="text"]{
+            width: 100%;
+            height: 40px;
+            padding: 0 10px;
+            background-color: #f2f2f2;
+            border-radius: 5px;
+            border: none;
+            font-size: 18px
+        }
+
+        input[type="text"]::placeholder{
+            font-size: 14px;
+        }
+
+        .input-container{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .input-container .input-line{
+            width: 45%;
+
+        }
+
+        input[type="button"]{
+            background-color: rgb(0, 132, 255);
+            color: white;
+            font-weight: 500;
+            font-size: 18px;
+            height: 50px;
+            padding: 0 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="button"]:hover{
+            background-color: rgb(0, 132, 255);
+        }
+
+
+
+        
+
+        
+    </style>
+    
+
+
+
+
+    
+    
+</body>
+</html>
+
