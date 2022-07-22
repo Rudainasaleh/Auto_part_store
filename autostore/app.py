@@ -170,7 +170,8 @@ def part():
                     image = prudoct['image']
                     price = prudoct['price']
                     quantity = request.form['quantity']
-                    total_price = price 
+                    print(quantity)
+                    total_price = price  * float(quantity)
 
                     userid = session['userid']
                 #id = session['userid']
@@ -183,6 +184,14 @@ def part():
                 #cursor.execute("UPDATE purchase SET partid = %s, name=%s, image=%s, price=%s, quantity=%s, total_price=%s WHERE userid =%s", (partid, name, image, price, quantity, total_price, id))
                     cursor.execute("INSERT INTO purchase (partid, name, image, price, quantity, total_price, userid) VALUES (%s, %s, %s, %s, %s, %s, %s)", (partid, name, image, price, quantity, total_price, userid))
                     conn.commit()
+
+                    cursor.execute("SELECT * FROM purchase WHERE partid = (%s) AND userid = (%s) ", (partid, userid))
+                    part = cursor.fetchall()
+                    orderid = part['orderid']
+
+                    cursor.execute("INSERT INTO parts (orderid) VALUES (%s) WHERE partid = (%s)", (orderid, partid))
+
+
                     return redirect(url_for('part'))
     else:
         return redirect(url_for('login'))
@@ -213,8 +222,11 @@ def cart():
         total = cursor.fetchone()
         t = total['total']
         print(total)
-        tax = 0.6 * t
+
+        tax = (0.6) * (t)
+        
         total_price = t + tax
+
         session['tax'] = tax
         session['total'] = t
         session['final_price'] = total_price
@@ -222,13 +234,15 @@ def cart():
 
 
 
-
+        
 
         if request.method == 'POST':
+            if request.form["remove"] == "Remove":
 
-            if request.form['remove_item'] == 'Remove:':
+            
 
                 userid = session['userid']
+                print(userid)
                 orderid = request.form['orderid']
                 cursor.execute("SELECT * from parts WHERE orderid = %s", (orderid,))
                 product= cursor.fetchone()
@@ -250,7 +264,7 @@ def cart():
             #session['total'] = total
             
 
-            cursor.execute("INSERT INTO cart VALUES (%s) ", (total,))
+            #cursor.execute("INSERT INTO cart VALUES (%s) ", (total,))
 
             
             
@@ -285,27 +299,7 @@ def cart():
 
     return render_template('cart.html', purchase = rows, price=t, tax = tax, total_price=total_price)
 
-@app.route('/delete_product', methods = ['POST'])
-def delete_part():
-
-    if request.form:
-        cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-
-        orderid = request.form['orderid']
-        orderid = request.form['orderid']
-        cursor.execute("SELECT * from parts WHERE orderid = %s", (orderid,))
-        order = cursor.fetchone()
-        partid = order['partid']
-        id = session['userid']
-        print(orderid)
-        print(id)
-        print(partid)
-
-
-        cursor.execute("DELETE FROM purchase WHERE partid = (%s) AND userid = (%s) AND orderid = (%s)", (partid, id, orderid,))
-        rows_deleted = cursor.rowcount
-        conn.commit()
-        return redirect(url_for('cart'))
+        
 
     
 
@@ -328,7 +322,7 @@ def checkout():
 
         
         
-            cartid = '1'
+            
             userid = session['userid']
             name_on_card = request.form['name']
             card_number = request.form['card']
@@ -343,51 +337,100 @@ def checkout():
             
 
 
-            cursor.execute("INSERT INTO billing (card_name, card_number, exp_date, cvc, cartid, total) VALUES (%s, %s, %s, %s, %s, %s)", (name_on_card, card_number, date, cvc, userid, t))
+            cursor.execute("INSERT INTO billing (card_name, card_number, exp_date, cvc, userid, total) VALUES (%s, %s, %s, %s, %s, %s)", (name_on_card, card_number, date, cvc, userid, t))
             conn.commit()
 
+            #cursor.execute("SELECT * FROM billing WHERE userid = (%s) AND card_name = (%s) AND total = (%s)", (userid, name_on_card, t))
+            #b = cursor.fetchall()
+            #billingid = b['id']
+
+            #session['bid'] = billingid
+
+            session['card_name'] = name_on_card
+            return redirect(url_for('delivary'))
+
+            
 
 
             #cursor.execute("INSERT INTO billing (card_name, card_number, exp_date, cvc, cartid) VALUES (%s, %s, %s, %s, %s)", (name_on_card, card_number, date, cvc, userid))
             #conn.commit()
+    
+            
 
-            address1 = request.form['address1']
-            state = request.form['state']
-            city = request.form['city']
-            zip = request.form['zip']
 
-            date = date.today()
-            full_address = address1 + state + city + zip
+
+            
+    
+        
+
+
+    return render_template('checkout.html')
+
+@app.route('/logout')
+
+def logout():
+    session.pop('userid', None)
+    flash("You are loged out")
+    return redirect(url_for('index'))
+
+
+
+@app.route('/delivary.html',  methods=['GET', 'POST'])
+def delivary():
+
+
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    userid = session['userid']
+    
+ 
+    
+
+    if (request.method == 'POST'):
+
+
+
+        t =session['final_price']
+        name_on_card = session['card_name']
+
+        
+
+
+            
+    
+        address1 = request.form['address1']
+        state = request.form['state']
+        city = request.form['city']
+        zip = request.form['zip']
+
+        date = date.today()
+        full_address = address1 + state + city + zip
+
+        billingid = session['bid']
+
+        cursor.execute("SELECT id AS bid from billingid WHERE  userid = (%s) AND card_name = (%s) AND total = (%s)", (userid, name_on_card, t))
+            
+        total = cursor.fetchone()
+        billingid = total['bid']
+
+        
             
 
             
            
 
             
-            cursor.execute("INSERT INTO cart (userid, order_date,total, billingid, address) VALUES (%s, %s, %S, %s, %s)", (userid, date, t, billingid, full_address))
-
-            cursor.execute("DELETE FROM purchase WHERE userid = %s", (userid,))
-            rows_deleted = cursor.rowcount
-            conn.commit()
+        cursor.execute("INSERT INTO cart (userid, order_date,total, billingid, address) VALUES (%s, %s, %S, %s, %s)", (userid, date, t, billingid, full_address))
+        conn.commit()
 
 
+        cursor.execute("DELETE FROM purchase WHERE userid = %s", (userid,))
+        rows_deleted = cursor.rowcount
+        conn.commit()
 
-            return redirect(url_for('index'))
+        return redirect(url_for('index'))
     
+    return render_template('delivary.html')
         
-
-
-    return render_template('checkout.html', purchase = rows)
-
-
-@app.route('/sum_total',  methods=['GET', 'POST'])
-def sum_total():
-    cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    userid = session['userid']
-    
-    cursor.execute("SELECT SUM(price) from purchase WHERE userid = %s ", (userid,))
-    result = cursor.fetchone()
-    return result
 
 
 
