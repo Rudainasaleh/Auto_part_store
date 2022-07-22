@@ -20,7 +20,7 @@
             <ul class="navbar">
                 <li><a href="index.html" class="active">Home</a></li>
                 <li><a href="parts.html">Parts</a></li>
-                <li><a href="vehicle.html">Add Vehical</a></li>
+                <li><a href="account.html">accounts</a></li>
                 <li><a href="cart.html">Cart</a></li>
                 <li><a href="login.html">Log in</a></li>
             </ul>
@@ -32,7 +32,7 @@
         </div>
     </header>
 
-
+    
     <div class="cart_page">
 
         
@@ -47,8 +47,9 @@
                 <th>Subtotal</th>
             </tr>
 
-        {% for purche in purches %}
+            {% for purche in purchase %}
             <tr>
+               
                 
                     <form method="post" action="/cart.html"></form>
                         <td>
@@ -58,47 +59,55 @@
                                 <div>
                                     <p>{{purche.name}}</p>
                                     <small>Price: {{purche.price}}</small>
-                                    <!--<input href="{{  url_for('delete_from_cart', id = purche.orderid)}}" name="remove" >Remove</a>-->
-                                    <input  type="submit" name="remove"  value="Remove"/>
+                                    
+                                    
+                                    <input type="submit" name="remove_item"  value="Remove"/>
                                     <input type="hidden" name="orderid" value="{{purche.orderid}}" />
-                                </div>
+                                    
                             </div>
 
                         </td>
                         <td><p type="number" name="quantity">{{purche.quantity}}</td>
                         <td>$ {{purche.total_price}}</td>
                     </form>
+                    
                 
             </tr>
-        {% endfor %}
+            {% endfor %}
+        
+        
             
             
 
             
 
         </table>
-
+        
+        
         <div class="total">
             <table>
                 <tr>
                     <td>Subtotal</td>
-                    <td>$150.00</td>
+                    <td> ${{ price }}</td>
                 </tr>
                 <tr>
                     <td>Tax</td>
-                    <td>$20.00</td>
+                    <td>${{ tax }}</td>
                 </tr>
                 <tr>
                     <td>Total</td>
-                    <td>$170.00</td>
+                    <td>${{total_price}}</td>
                 </tr>
                 
             
             </table>
-            <input type="submit" name="checkout_btn" value="checkout" class="btn"/>
+            <a href="checkout.html" class="btn" >checkout</a>
         </div>
         
+        
+        
     </div>
+    
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800;900&family=Poppins:wght@300;400;500;600;700&display=swap');
@@ -356,4 +365,33 @@
     
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
