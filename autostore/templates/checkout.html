@@ -67,36 +67,47 @@
 
             
         </div>
-        {% for purche in purchase %}
+        
 
-        <!--
+        
 
         <div class="form_2">
 
 
-            <h2 class="form-title">Oreder Details</h2>
+            <h2 class="form-title">Delivary Information</h2>
 
-            <form method="post" action="{{url_for('checkout')}}" class="checkout-form">
+            <form method="post" action="{{url_for('checkout')}}" class="checkout-form" >
                 <div class="input-line">
-                    <label for="name">{{purche.name}}</label>
-                    <label for="name">{{purche.total_price}}</label>
-                    
-                    
-
-                    <input type="text" name="name" id="name" value="" placeholder="Your Name and surname">
+                    <label for="address1">Address 1</label>
+                    <input type="text" name="address1" id="address1" value="" placeholder=""required >
                 </div>
+                <div class="input-line">
+                    <label for="address2">Address 2</label>
+                    <input type="text" name="address1" id="address2" value="" placeholder="">
+                </div>
+                <div class="input-line">
+                    <label for="state">State</label>
+                    <input type="text" name="stste" id="state" value="" placeholder="" required>
+                </div>
+                <div class="input-line">
+                    <label for="city">City</label>
+                    <input type="text" name="city" id="city" value="" placeholder="" required>
+                </div>
+                <div class="input-line">
+                    <label for="city">Zip</label>
+                    <input type="text" name="zip" id="zip" value="" placeholder="" required>
+                </div>
+
                 
 
-
-                <input type="submit" name="back" value="Back" herf="{{url_for('cart')}}" />
-
             </form>
+        
 
 
             
         </div>
-        -->
-        {% endfor %}
+        
+        
     </div>
 
 
