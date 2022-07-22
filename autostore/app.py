@@ -4,9 +4,10 @@
 
 import curses
 
+from datetime import date
 from tkinter.tix import Form
 from traceback import print_exc
-
+from unittest import result
 from flask import Flask, flash, redirect, request, url_for, session
 from flask import render_template
 
@@ -198,47 +199,91 @@ def cart():
 
     
     
-
+    if 'userid' in session:
     
-    cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
 
-    userid = session['userid']
-    cursor.execute("SELECT * from purchase WHERE userid = %s ", (userid,))
-    rows = cursor.fetchall()
+        userid = session['userid']
+        cursor.execute("SELECT * from purchase WHERE userid = %s ", (userid,))
+        rows = cursor.fetchall()
 
-
-
-    if request.method == 'POST':
+        cursor.execute("SELECT SUM(price) AS total from purchase WHERE userid = %s ", (userid,))
             
-        if request.form['remove_item'] == 'Remove':
+        total = cursor.fetchone()
+        t = total['total']
+        print(total)
+        tax = 0.6 * t
+        total_price = t + tax
+        session['tax'] = tax
+        session['total'] = t
+        session['final_price'] = total_price
 
 
 
-            orderid = request.form['orderid']
+
+
+
+        if request.method == 'POST':
+
+            if request.form['remove_item'] == 'Remove:':
+
+                userid = session['userid']
+                orderid = request.form['orderid']
+                cursor.execute("SELECT * from parts WHERE orderid = %s", (orderid,))
+                product= cursor.fetchone()
+
+                partid  = product['partid']
+                cursor.execute("DELETE FROM purchase WHERE partid = (%s) AND userid = (%s) AND orderid = (%s)", (partid, id, orderid,))
+                rows_deleted = cursor.rowcount
+                conn.commit()
+                return redirect(url_for('cart'))
+
+
+
+            #userid = session['userid']
+            #cursor.execute("SELECT * from cart WHERE userid = %s ", (userid,))
+            #cartinfo = cursor.fetchall()
             
-            cursor.execute("SELECT * from parts WHERE orderid = %s", (orderid,))
-            order = cursor.fetchone()
-            partid = order['partid']
-            id = session['userid']
-            print(orderid)
-            print(id)
-            print(partid)
+            
+            
+            #session['total'] = total
+            
 
-            cursor.execute("DELETE FROM purchase WHERE partid = (%s) AND userid = (%s) AND orderid = (%s)", (partid, id, orderid,))
-            rows_deleted = cursor.rowcount
-            conn.commit()
-            return redirect(url_for('cart'))
+            cursor.execute("INSERT INTO cart VALUES (%s) ", (total,))
+
+            
+            
+            #if request.form['remove_item'] == 'Remove':
+
+
+
+                #orderid = request.form['orderid']
+            
+                #cursor.execute("SELECT * from parts WHERE orderid = %s", (orderid,))
+            #order = cursor.fetchone()
+            #partid = order['partid']
+            #id = session['userid']
+            #print(orderid)
+            #print(id)
+            #print(partid)
+
+            #cursor.execute("DELETE FROM purchase WHERE partid = (%s) AND userid = (%s) AND orderid = (%s)", (partid, id, orderid,))
+            #rows_deleted = cursor.rowcount
+            #conn.commit()
+            #return redirect(url_for('cart'))
 
     #cursor.execute("SELECT * from purchase")
     #purchase = cursor.fetchall()
 
     # cursor.execute("INSERT INTO CART () VALUES ")
+    else:
+        return redirect(url_for('login'))
 
 
 
 
-    return render_template('cart.html', purchase = rows)
+    return render_template('cart.html', purchase = rows, price=t, tax = tax, total_price=total_price)
 
 @app.route('/delete_product', methods = ['POST'])
 def delete_part():
@@ -280,38 +325,70 @@ def checkout():
     
 
     if ( (request.method == 'POST') and ('name' in request.form) and ('card' in request.form) and ('date' in request.form) and ('cvc' in request.form)):
+
         
         
-           cartid = '1'
-           userid = session['userid']
-           name_on_card = request.form['name']
-           card_number = request.form['card']
-           date = request.form['date']
-           cvc = request .form['cvc']
+            cartid = '1'
+            userid = session['userid']
+            name_on_card = request.form['name']
+            card_number = request.form['card']
+            date = request.form['date']
+            cvc = request .form['cvc']
+            #total = session['total']
+            cursor.execute("SELECT SUM(price) AS total from purchase WHERE userid = %s ", (userid,))
+            
+            total = cursor.fetchone()
+            #t = total['total']
+            t = session['final_price']
+            
 
-           cursor.execute("INSERT INTO billing (card_name, card_number, exp_date, cvc, cartid) VALUES (%s, %s, %s, %s, %s)", (name_on_card, card_number, date, cvc, userid))
-           conn.commit()
 
-           cursor.execute("DELETE FROM purchase WHERE userid = %s", (userid,))
-           rows_deleted = cursor.rowcount
-           conn.commit()
-           return redirect(url_for('index'))
+            cursor.execute("INSERT INTO billing (card_name, card_number, exp_date, cvc, cartid, total) VALUES (%s, %s, %s, %s, %s, %s)", (name_on_card, card_number, date, cvc, userid, t))
+            conn.commit()
+
+
+
+            #cursor.execute("INSERT INTO billing (card_name, card_number, exp_date, cvc, cartid) VALUES (%s, %s, %s, %s, %s)", (name_on_card, card_number, date, cvc, userid))
+            #conn.commit()
+
+            address1 = request.form['address1']
+            state = request.form['state']
+            city = request.form['city']
+            zip = request.form['zip']
+
+            date = date.today()
+            full_address = address1 + state + city + zip
+            
+
+            
+           
+
+            
+            cursor.execute("INSERT INTO cart (userid, order_date,total, billingid, address) VALUES (%s, %s, %S, %s, %s)", (userid, date, t, billingid, full_address))
+
+            cursor.execute("DELETE FROM purchase WHERE userid = %s", (userid,))
+            rows_deleted = cursor.rowcount
+            conn.commit()
+
+
+
+            return redirect(url_for('index'))
     
         
 
 
-
-
-        
-
-
-
-
-
-
-
-
     return render_template('checkout.html', purchase = rows)
+
+
+@app.route('/sum_total',  methods=['GET', 'POST'])
+def sum_total():
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    userid = session['userid']
+    
+    cursor.execute("SELECT SUM(price) from purchase WHERE userid = %s ", (userid,))
+    result = cursor.fetchone()
+    return result
+
 
 
 
